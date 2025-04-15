@@ -2,7 +2,15 @@
 
 A slick, real-time OBS overlay that shows your current Spotify track — built with Node.js, WebSocket, and just enough CSS flair.
 
-![Spotify Overlay Demo](./assets/images/blog/gifs/2025-04-15-19-02-46.gif)
+  <iframe width="560" height="315"
+src="https://www.youtube.com/embed/pYa_6KV2zOw"
+frameborder="0"
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen></iframe>
+
+![Spotify Overlay Demo](https://marsuvesvex.xyz/_next/image?url=%2Fassets%2Fimages%2Fblog%2Fobs%2F2025-04-15_19-22.png&w=828&q=75)
+
+---
 
 ## ✨ Features
 
@@ -28,90 +36,92 @@ A slick, real-time OBS overlay that shows your current Spotify track — built w
 ```bash
 git clone https://github.com/your-username/spotify-obs-overlay.git
 cd spotify-obs-overlay
-2. Install Dependencies
-bash
-Copy
-Edit
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
-3. Set Up Spotify API Access
-Create a Spotify app at developer.spotify.com and grab:
+```
 
-SPOTIFY_CLIENT_ID
+### 3. Set Up Spotify API Access
 
-SPOTIFY_CLIENT_SECRET
+Create a Spotify app at [developer.spotify.com](https://developer.spotify.com) and grab your:
 
-SPOTIFY_REFRESH_TOKEN
+- `SPOTIFY_CLIENT_ID`
+- `SPOTIFY_CLIENT_SECRET`
+- `SPOTIFY_REFRESH_TOKEN`
 
-To generate a refresh token, follow this guide:
-👉 Create a Spotify Refresh Token
+To generate a refresh token, follow this guide: 👉 **Create a Spotify Refresh Token**
 
-Add them to a .env file:
+Then, create a `.env` file:
 
-env
-Copy
-Edit
+```env
 SPOTIFY_CLIENT_ID=your_client_id
 SPOTIFY_CLIENT_SECRET=your_client_secret
 SPOTIFY_REFRESH_TOKEN=your_refresh_token
-▶️ Run the Server
-bash
-Copy
-Edit
-npm run start
+```
+
+---
+
+### ▶️ Run the Server
+
+```bash
+npm start
+```
+
 This will:
 
-Start the Express server on http://localhost:3000
+- Start the Express server at `http://localhost:3000`
+- Begin polling Spotify for track info
+- Broadcast updates over WebSocket
 
-Begin polling Spotify for track info
+---
 
-Broadcast updates over WebSocket
+### 🖥️ Add to OBS
 
-🖥️ Add to OBS
-Open OBS.
+1. Open OBS.
+2. Add a **Browser Source**.
+3. Set the URL to: `http://localhost:3000/overlay`
+4. Set the size (e.g. `800x200`).
+5. Uncheck **"Control audio via OBS"**.
 
-Add a Browser Source.
+That’s it! When a new song plays, your overlay updates live. 🎶
 
-Set the URL to: http://localhost:3000/overlay
+---
 
-Set size (e.g. 800x200).
+## 🧰 Dev Tools & Tech Stack
 
-Make sure "Control audio via OBS" is unchecked.
+- Node.js + Express
+- Spotify Web API
+- WebSocket
+- OBS WebSocket (optional)
+- HTML/CSS overlay frontend
 
-That’s it. When a new song plays, your overlay updates live.
+---
 
-🧰 Dev Tools & Tech Stack
-Node.js + Express
+## ⚙️ Optional OBS Auto-Refresh Script
 
-Spotify Web API
-
-WebSocket
-
-OBS WebSocket (optional) for advanced control
-
-HTML/CSS overlay frontend
-
-⚙️ Optional OBS Auto-Refresh Script
 Want to reload overlay sources when the track changes?
 
-Run:
-
-bash
-Copy
-Edit
+```bash
 node obs-refresh.js
+```
+
 Or with flags:
 
-bash
-Copy
-Edit
+```bash
 node obs-refresh.js --once     # One-time refresh
 node obs-refresh.js --force    # Force toggle without checking track
-Make sure OBS WebSocket is enabled and the obsPassword is set correctly in the script config.
+```
 
-📦 File Structure
-bash
-Copy
-Edit
+Make sure OBS WebSocket is enabled and the `obsPassword` is set correctly in the script config.
+
+---
+
+## 📦 File Structure
+
+```bash
 .
 ├── overlay/                 # HTML/CSS/JS overlay page
 ├── server.js                # Express + WebSocket server
@@ -120,21 +130,27 @@ Edit
 ├── .env                     # Spotify credentials
 ├── package.json
 └── README.md
-📸 Screenshots
+```
+
+---
+
+## 📸 Screenshots
+
 <img src="./assets/images/blog/obs/2025-04-15_19-22.png" alt="Overlay Preview" width="600" />
-🧪 Tech Links
-Spotify Web API Docs
 
-OBS WebSocket
+---
 
-WebSocket API
+## 🧪 Tech Links
 
-Animated CSS Transitions
+- [Spotify Web API Docs](https://developer.spotify.com/documentation/web-api/)
+- [OBS WebSocket](https://github.com/obsproject/obs-websocket)
+- [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+- [Animated CSS Transitions](https://developer.mozilla.org/en-US/docs/Web/CSS/transition)
 
-🙌 Shoutout
+---
+
+## 🙌 Shoutout
+
 Inspired by the need to show off great music taste while live — with a little overengineering.
-If you build on top of this, drop me a link — I’d love to see it!
 
-go
-Copy
-Edit
+If you build on top of this, drop me a link — I’d love to see it!
