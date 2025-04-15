@@ -2,11 +2,9 @@
 
 A slick, real-time OBS overlay that shows your current Spotify track — built with Node.js, WebSocket, and just enough CSS flair.
 
-  <iframe width="560" height="315"
-src="https://www.youtube.com/embed/pYa_6KV2zOw"
-frameborder="0"
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe>
+
+[![Custom Spotify Overlay for OBS (Node.js + WebSocket)](https://img.youtube.com/vi/pYa_6KV2zOw/0.jpg)](https://www.youtube.com/watch?v=pYa_6KV2zOw)
+
 
 ![Spotify Overlay Demo](https://marsuvesvex.xyz/_next/image?url=%2Fassets%2Fimages%2Fblog%2Fobs%2F2025-04-15_19-22.png&w=828&q=75)
 
