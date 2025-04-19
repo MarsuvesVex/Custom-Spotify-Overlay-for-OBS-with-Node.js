@@ -15,9 +15,9 @@ const config = {
     { name: 'Spotify', type: 'source', sceneName: 'overlay' },
     { name: 'Spotify Card', type: 'folder', sceneName: 'overlay' }
   ],
-  reloadDelay: 500,
+  reloadDelay: 1000,
   cacheFile: './.spotify-current-song.json',
-  checkInterval: 5000
+  checkInterval: 1000
 };
 
 // Spotify helpers
@@ -88,6 +88,37 @@ async function toggleSourceVisibility(obs, name, scene, visible) {
   });
 }
 
+async function reloadOBSSources_new(doReload = true) {
+  const obs = new OBSWebSocket();
+
+  try {
+    console.log(`Connecting to OBS at ${config.obsUrl}...`);
+    await obs.connect(config.obsUrl, config.obsPassword);
+    console.log('Connected.');
+
+    if (!doReload) return;
+
+    /* for (const source of config.sources) { */
+    /*   await refreshBrowserSource(obs, source.name); */
+    /* } */
+
+    config.sources.forEach(async (source) => {
+      const { type, name } = source;
+      if (type === 'source') {
+	await toggleSourceVisibility(obs, name, source.sceneName, false);
+      } else if (type === 'folder') {
+	console.log(`Refreshing folder source: ${name}`);
+	await obs.call('RefreshBrowserSource', { sourceName: name });
+      }
+    });
+    console.log('Browser sources refreshed.');
+  } catch (err) {
+    console.error('OBS error:', err.message);
+  } finally {
+    await obs.disconnect().catch(() => {});
+  }
+}
+
 async function reloadOBSSources(doReload = true) {
   const obs = new OBSWebSocket();
 
@@ -137,6 +168,26 @@ async function checkForSongChanges() {
     await reloadOBSSources();
   } else {
     console.log(`No change: ${current.artist} - ${current.title}`);
+  }
+}
+
+
+async function refreshBrowserSource(obs, sourceName) {
+  try {
+    const { inputSettings } = await obs.call('GetInputSettings', { inputName: sourceName });
+    const url = inputSettings.url;
+    if (url) {
+      console.log(`Refreshing browser source: ${sourceName}`);
+      await obs.call('SetInputSettings', {
+        inputName: sourceName,
+        inputSettings: { url }, // Setting it to the same URL triggers a refresh
+        overlay: false
+      });
+    } else {
+      console.warn(`Source "${sourceName}" does not appear to be a browser source.`);
+    }
+  } catch (err) {
+    console.error(`Failed to refresh browser source "${sourceName}":`, err.message);
   }
 }
 
